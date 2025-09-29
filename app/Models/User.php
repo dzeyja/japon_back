@@ -17,6 +17,15 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+
+    public function profile() {
+        return $this->belongsTo(Profile::class);
+    }
+
+    public function comments() {
+        return $this->hasMany(Comment::class);
+    }
+
     protected $fillable = [
         'email',
         'password',

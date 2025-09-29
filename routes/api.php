@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
@@ -18,6 +22,5 @@ Route::post('/comments', [CommentController::class, 'sendComment'])->middleware(
 Route::put('/comments/{id}', [CommentController::class, 'updateComment'])->middleware('auth:sanctum');
 Route::get('/products/{product_id}/comments', [CommentController::class, 'getCommentsById'])->middleware('auth:sanctum');
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/cart/add', [CartController::class, 'addProduct']);
+Route::get('/cart/{userId}', [CartController::class, 'getCart']);

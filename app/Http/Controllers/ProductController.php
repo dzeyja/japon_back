@@ -28,8 +28,8 @@ class ProductController extends Controller
     public function getProductsById($id, Request $request) {
         $product = Product::where('id', $id)->get();
 
-        return response()->json([
+        return response()->json(
             $product
-        ]);
+        );
     }
 }
