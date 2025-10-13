@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\WelcomeMail;
+use App\Models\Profile;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -20,11 +24,25 @@ class AuthController extends Controller
             'password'=>Hash::make($data['password'])
         ]);
 
+        $profile = Profile::create([
+            'user_id' => $user->id,
+            'fullName' => null,
+            'phone' => null,
+            'gender' => null,
+            'birthDate' => null,
+            'avatar' => null,
+        ]);
+
+        Mail::to($user->email)->send(new WelcomeMail($user));
+
+        event(new Registered($user));
+
         return response()->json([
             'user'=>$user,
+            'profile'=>$profile,
             'message'=>'Вы успешно зарегались'
         ], 201);
-    }
+    }   
 
     public function login(Request $request) {
         $credentials = $request->validate([
