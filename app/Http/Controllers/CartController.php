@@ -16,11 +16,13 @@ class CartController extends Controller
         $cartItem = Cart_item::where('user_id', $userId)
             ->where('product_id', $productId)
             ->first();
+        
+        $product = Product::findOrFail($productId);
 
         if ($cartItem) {
             $cartItem->increment('quantity');
+            $cartItem->price += $product->price;
         } else {
-            $product = Product::findOrFail($productId);
 
             $cartItem = Cart_item::create([
                 'user_id'=>$userId,

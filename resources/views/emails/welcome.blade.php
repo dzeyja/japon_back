@@ -10,13 +10,18 @@
 </head>
 <body>
     <div class="container">
-        <h1>Привет, {{ $user->name ?? 'Пользователь' }}!</h1>
+        <h1>Привет, {{ $user->email ?? 'Пользователь' }}!</h1>
         <p>Спасибо за регистрацию в {{ config('app.name') }}!</p>
         <p>Ваш email: {{ $user->email }}.</p>
 
         @if (!$user->hasVerifiedEmail())
             <p>Пожалуйста, подтвердите ваш email, чтобы получить полный доступ:</p>
-            <a href="{{ route('verification.verify', ['id' => $user->id, 'hash' => sha1($user->email)]) }}" class="button">Подтвердить Email</a>
+            <a href="{{ URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(60),
+                ['id' => $user->id, 'hash' => sha1($user->getEmailForVerification())]
+            ) }}" 
+            class="button">Подтвердить Email</a>
         @endif
 
         <p>Если у вас есть вопросы, пишите на <a href="mailto:support@example.com">support@example.com</a>.</p>

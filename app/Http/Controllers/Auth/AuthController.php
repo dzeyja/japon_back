@@ -35,8 +35,6 @@ class AuthController extends Controller
 
         Mail::to($user->email)->send(new WelcomeMail($user));
 
-        event(new Registered($user));
-
         return response()->json([
             'user'=>$user,
             'profile'=>$profile,

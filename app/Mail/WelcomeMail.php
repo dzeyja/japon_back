@@ -8,12 +8,15 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\URL;
+use Carbon\Carbon;
 
 class WelcomeMail extends Mailable
 {
     use Queueable, SerializesModels;
 
     public $user;
+    public $verifyUrl;
 
     /**
      * Create a new message instance.
@@ -21,6 +24,15 @@ class WelcomeMail extends Mailable
     public function __construct(User $user)
     {
         $this->user = $user;
+
+        $this->verifyUrl = URL::temporarySignedRoute(
+            'verification.verify', 
+            Carbon::now()->addMinutes(60), 
+            [
+                'id' => $user->id,
+                'hash' => sha1($user->email),
+            ]
+        );
     }
 
     /**
@@ -40,14 +52,15 @@ class WelcomeMail extends Mailable
     {
         return new Content(
             view: 'emails.welcome',
-            with: ['user' => $this->user]
+            with: [
+                'user' => $this->user,
+                'verifyUrl' => $this->verifyUrl,
+            ]
         );
     }
 
     /**
      * Get the attachments for the message.
-     *
-     * @return array<int, \Illuminate\Mail\Mailables\Attachment>
      */
     public function attachments(): array
     {

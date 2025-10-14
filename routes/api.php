@@ -14,6 +14,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+    ->middleware(['signed'])
     ->name('verification.verify');
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -25,7 +26,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('/profile', [ProfileController::class, 'index']);
+    Route::put('/profile/update', [ProfileController::class, 'index']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
     
