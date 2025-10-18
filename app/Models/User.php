@@ -21,6 +21,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Comment::class);
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
     protected $fillable = [
         'email',
         'password',

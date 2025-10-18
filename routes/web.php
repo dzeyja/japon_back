@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,11 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Mail;
 
-Route::get('/test-mail', function () {
-    Mail::raw('Тестовое письмо от Laravel!', function ($message) {
-        $message->to('zharylkasynov_d@mail.ru')
-                ->subject('Проверка SMTP через Яндекс');
-    });
+Route::prefix('admin')->group(function () {
+    Route::get('/auth/login', [AdminController::class, 'showLogin'])->name('admin.login');
+    Route::post('/auth/login', [AdminController::class, 'login'])->name('admin.login.submit');
+});
 
-    return 'Письмо отправлено (если всё ок)';
+Route::middleware(['admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
 });
