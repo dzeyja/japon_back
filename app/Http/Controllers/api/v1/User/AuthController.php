@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\api\v1\User;
 
+use App\Http\Controllers\Controller;
 use App\Mail\WelcomeMail;
 use App\Models\Profile;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +21,8 @@ class AuthController extends Controller
 
         $user = User::create([
             'email'=>$data['email'],
-            'password'=>Hash::make($data['password'])
+            'password'=>Hash::make($data['password']),
+            'role'=>'user'
         ]);
 
         $profile = Profile::create([

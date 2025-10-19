@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\admin\v1\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Support\Facades\Mail;
 
-Route::get('/', function () {
-    return view('welcome.blade');
+Route::prefix('admin')->group(function () {
+    Route::get('/login', [AuthController::class, 'showLogin'])->name('admin.login');
+    Route::post('/login', [AuthController::class, 'login'])->name('admin.login.submit');
+});
+
+Route::middleware(['admin'])->prefix('admin')->group(function () {
+    Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('admin.dashboard');
 });

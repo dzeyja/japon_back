@@ -16,24 +16,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Category::insert([
-        //     [
-        //         'id' => 1,
-        //         'name' => 'Аптека и здоровье',
-        //         'slug' => 'health',
-        //     ],
-        //     [
-        //         'id' => 2,
-        //         'name' => 'Красота и уход',
-        //         'slug' => 'beatiful',
-        //     ],
-        //     [
-        //         'id' => 3,
-        //         'name' => 'Средства для дома',
-        //         'slug' => 'home',
-        //     ],
-        // ]);
-        // Product::factory(15)->create();
+        Category::insert([
+            [
+                'id' => 1,
+                'name' => 'Аптека и здоровье',
+                'slug' => 'health',
+            ],
+            [
+                'id' => 2,
+                'name' => 'Красота и уход',
+                'slug' => 'beatiful',
+            ],
+            [
+                'id' => 3,
+                'name' => 'Средства для дома',
+                'slug' => 'home',
+            ],
+        ]);
+        Product::factory(15)->create();
 
         \App\Models\User::factory()->create([
             'email' => 'admin@admin.kz',

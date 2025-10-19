@@ -1,16 +1,17 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\admin\v1;
 
+use App\Http\Controllers\Controller;
 use App\Models\Comment;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminController extends Controller
+class AuthController extends Controller
 {
-    public function dashboard() {
+     public function dashboard() {
         $users = User::take(5)->get();
         $products = Product::take(5)->get();
         $comments = Comment::with('user', 'product')->take(5)->get();
@@ -47,9 +48,5 @@ class AdminController extends Controller
             return back()->withErrors(['email' => 'Access denied. Admins only.']);
         };
 
-    }
-
-    public function addProduct(Request $request) {
-        
     }
 }

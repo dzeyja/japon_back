@@ -13,6 +13,12 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    protected $fillable = [
+        'email',
+        'password',
+        'role'
+    ];
+
     public function profile() {
         return $this->belongsTo(Profile::class);
     }
@@ -21,15 +27,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Comment::class);
     }
 
+    public function favorites() {
+        return $this->hasMany(Favorites::class);
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
-
-    protected $fillable = [
-        'email',
-        'password',
-    ];
 
     public $timestamps = false;
 
